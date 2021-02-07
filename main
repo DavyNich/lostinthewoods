@@ -1,0 +1,1503 @@
+import random
+from time import sleep as wait
+
+#randomly sets the time to day/night
+day_gen = random.randint(0,1)
+if day_gen == 1:
+   is_day = False
+else:
+   is_day = True
+
+#not needed
+def day_night(is_day):
+    if is_day == True:
+        is_day = False
+    else: is_day = True
+phone_list = ["iPhone 8", "iPhone X", "Nokia", "Google Pixel"]
+battery = random.randint(0,100)
+cash = random.randint(0,100)
+days = 0
+
+#Makes tracking specific tile location easier
+tile = [
+    ["Far NW", "Far North W", "Far North", "Far North E", "Far NE"],
+    ["Far West North", "Northwest", "North", "Northeast", "Far East North"],
+    ["Far West", "West", "Central", "East", "Winner"],
+    ["Far West South", "Southwest", "South", "Southeast", "Far East South"],
+    ["Far SW", "Far South W", "Far South", "Far South E", "Far SE"]
+    ]
+
+#Keeps track of what's in your pockets
+pockets_beginning = {
+    "Phone": {
+        "Model": phone_list[random.randint(0,3)],
+        "Battery": str(battery) + "%",
+        "Service": False,
+        "Working": True,
+        },
+    "Wallet": {
+        "Cash": cash,
+        "ID": True,
+        }
+    }
+
+
+
+def credits():
+    print("")
+    print("Lost in the woods")
+    wait(1.5)
+    print(f"Played by: {username}")
+    wait(1.5)
+    print("Concept by: Dave Wiley")
+    wait(1.5)
+    print("Story by: Dave Wiley")
+    wait(1.5)
+    print("Directed by: Dave Wiley")
+    wait(1.5)
+    print("Produced by: Dave Wiley")
+    wait(1.5)
+    print(f"It took you {days} days.")
+    wait(1.5)
+    print(f"Your final score was: {cash}")
+
+def hope(pockets_beginning):
+    luck_roll_1 = random.randint(0,100)
+    
+    if luck_roll_1 >= 35:
+        pockets_beginning["Phone"]["Service"] = True
+    else: 
+        pass
+
+def battery_manager(battery):
+    if battery >= 5:
+        batttery-=5
+    else: battery = 0
+
+def timer(is_day, days):
+    if is_day == True:
+        print("It is currently day.")
+        days += 0.5
+    else:
+        print("It is currently night.")
+        days += 0.5
+
+def tryN(new_dir, battery, is_day, current_location):
+    if ui == tile[1][2]:
+        print("A'ight")
+    elif ui == tile[1][2].lower():
+        print("m'kay")
+    elif ui == tile[1][2].upper():
+        print("Yee")
+    elif ui == "N":
+        print("yup...")
+    elif ui == "n":
+        print("Eeyup...")
+    else: print("Oops!")
+
+def tryE (new_dir, battery, is_day, current_location):
+    if ui == tile[2][3]:
+        print("A'ight!")
+    elif ui == tile[2][3].lower():
+        print("m'kay!")
+    elif ui == tile[2][3].upper():
+        print("Yee!")
+    elif ui == "E!":
+        print("yup...!")
+    elif ui == "e":
+        print("Eeyup...!")
+    else: print("Oops!")
+
+def tryS (new_dir, battery, is_day, current_location):
+    if ui == tile[3][2]:
+        print("A'ight?")
+    elif ui == tile[3][2].lower():
+        print("m'kay?")
+    elif ui == tile[3][2].upper():
+        print("Yee?")
+    elif ui == "S":
+        print("yup...?")
+    elif ui == "s":
+        print("Eeyup...?")
+    else: print("Oops!")
+
+def tryW (new_dir, battery, is_day, current_location):
+    if ui == tile[2][1]:
+        print("A'ight<")
+    elif ui == tile[2][1].lower():
+        print("m'kay<")
+    elif ui == tile[2][1].upper():
+        print("Yee<")
+    elif ui == "W":
+        print("yup...<")
+    elif ui == "w":
+        print("Eeyup...<")
+    else: print("Oops!")
+
+#handles the text at the beginning of the game if you start at night
+def night_intro():
+    print("")
+    print("You awaken suddenly...")
+    wait(2)
+    print("You don't remember having fallen asleep recently...")
+    wait(3)
+    print("You notice it's quite chilly wherever you are...")
+    wait(3)
+    print("Dark too...")
+    wait(2)
+    print("You hear the faint chirping of insects around you...")
+    wait(2)
+    print("You're...")
+    wait(1)
+    print("LOST IN THE WOODS!")
+    wait(1.5)
+
+#handles the text at the beginning of the game if you start at day
+def day_intro():
+    print("")
+    print("You awaken suddenly...")
+    wait(2)
+    print("You don't remember having fallen asleep recently...")
+    wait(2)
+    print("You hear the faint chirping of insects around you...")
+    wait(2)
+    print("You're...")
+    wait(1)
+    print("LOST IN THE WOODS!")
+    wait(1.5)
+
+# Far NW N <=> MOUNTAINS...MOUNTAINS..MOUNTAINS...MOUNTAINS -> Ocean (certain death)
+#    ^            ^            ^           ^           ^
+#    |            |            |           |           |
+#    v            v            v           v           v
+# Far NW W <=> Northwest <=> North <=> Northeast <=> Ocean -> Ocean
+#    ^           ^          ^            ^
+#    |           |          |            |
+#    v           v          v            v
+# Far West <=>  West <=> Central <=>   East  <=>  WINNER!
+#    ^           ^          ^            ^
+#    |           |          |            |
+#    v           v          v            v
+# Far SW W <=> Southwest <=> Central <=> Southeast <=> Ocean -> Ocean
+#    ^           ^          ^            ^
+#    |           |          |            |
+#    v           v          v            v
+# Far SW S <=> DESERT......DESERT....DESERT.....DESERT.... -> Ocean (near-certain death)
+
+spawnable_locations = [tile[1][1], tile[1][2], tile[1][3], tile[2][1], tile[2][2], tile[2][3], tile[3][1], tile[3][2], tile[3][3]]
+
+current_location = spawnable_locations[random.randint(0,8)]
+
+print("======= LOST IN THE WOODS =======")
+print("A CHOOSE YOUR OWN ADVENTURE STORY")
+print("Directed and Produced by: Dave W.")
+print("         Starring: YOU!!         ")
+print("           v 1.1.3.3.7           ")
+print("=================================")
+username = input("Please choose a username: ")
+print("")
+def load():
+    i = 7
+    print("Loading new area...")
+    while i >= 0:
+        wait(1)
+        print("...")
+        i -= 1
+    wait(1)
+
+def move(new_dir, current_location, days):
+    if new_dir == "North" or new_dir == "north" or new_dir == "N" or new_dir == "n" or new_dir == "NORTH":
+        def move_north():
+            print("")
+            print("You've chosen to go north...")
+            wait(1)
+            print("You find your bearings and head north.")
+            wait(2)
+            print("You walk for a long time...")
+            load()
+            day_night(is_day)
+            battery_manager(battery)
+        if current_location == "Far North" or current_location == "Far North W" or current_location == "Far North E" or current_location == "Far West North" or current_location == "Far East North":
+            print("Oops! You froze to death... Try again?")
+            credits()
+        elif current_location == tile[1][2]:
+            current_location = "Far North"
+            days += 0.5
+            far_north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][3]:
+            current_location = "Far North E"
+            days += 0.5
+            far_ne(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][3]:
+            current_location = tile[1][3]
+            days += 0.5
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][3]:
+            current_location = tile[2][3]
+            days += 0.5
+            east(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][2]:
+            current_location = tile[2][2]
+            days += 0.5
+            central(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South":
+            current_location = tile[3][2]
+            days += 0.5
+            south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South E":
+            current_location = tile[3][3]
+            days += 0.5
+            southeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South W":
+            current_location = tile[3][1]
+            days += 0.5
+            southwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][1]:
+            current_location = tile[2][1]
+            days += 0.5
+            west(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][1]:
+            current_location = tile[1][1]
+            days += 0.5
+            northwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][1]:
+            current_location = "Far Northwest"
+            days += 0.5
+            far_nw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][2]:
+            current_location = tile[1][2]
+            days += 0.5
+            north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far West S":
+            current_location = "Far West"
+            days += 0.5
+            far_west(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far West":
+            current_location = "Far West North"
+            days += 0.5
+            far_wn(is_day, pockets_beginning, battery, current_location)
+        
+    elif new_dir == "South" or new_dir == "south" or new_dir == "S" or new_dir == "s" or new_dir == "SOUTH":
+        def move_south():
+            print("")
+            print("You've chosen to go south...")
+            wait(1)
+            print("You get your bearings and head south...")
+            load()
+            day_night(is_day)
+            battery_manager(battery)
+        if current_location == "Far North":
+            current_location = tile[1][2]
+            days += 0.5
+            north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far North E":
+            current_location = tile[1][3]
+            days += 0.5
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far North W":
+            current_location = tile[1][1]
+            days += 0.5
+            northwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][2]:
+            current_location = tile[2][2]
+            days += 0.5
+            central(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][3]:
+            current_location = tile[2][3]
+            days += 0.5
+            east(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][3]:
+            current_location = tile[3][3]
+            days += 0.5
+            southeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][3]:
+            current_location = "Far South E"
+            days += 0.5
+            far_se(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][2]:
+            current_location = "Far South"
+            days += 0.5
+            far_south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South" or current_location == "Far South E" or current_location == "Far South W":
+            print("Oops! You died from heat stroke and dehydration... Try again?")
+            credits()
+        elif current_location == tile[3][1]:
+            current_location = "Far South W"
+            days += 0.5
+            far_sw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][1]:
+            current_location = tile[3][1]
+            days += 0.5
+            southwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][1]:
+            current_location = tile[2][1]
+            days += 0.5
+            west(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][2]:
+            current_location = tile[3][2]
+            days += 0.5
+            south(is_day, pockets_beginning, battery, current_location)
+
+    elif new_dir == "East" or new_dir == "east" or new_dir == "E" or new_dir == "e" or new_dir == "EAST":
+        def move_east():
+            print("")
+            print("You chose to move east.")
+            wait(1)
+            print("You get your bearings and head east...")
+            load()
+            day_night(is_day)
+            battery_manager(battery)
+        if current_location == "Far North N":
+            current_location = "Far North E"
+            days += 0.5
+            north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far North E":
+            print("Oops! You've died from frostbite. Try again?")
+        elif current_location == "Far North W":
+            current_location = "Far North"
+            days += 0.5
+            far_north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][2]:
+            current_location = tile[1][3]
+            days += 0.5
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][3]:
+            current_location = "Northeast Ocean"
+            days += 0.5
+            ocean_ne(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][3]:
+            days += 0.5
+            print("Congratulations! You've escaped the woods!")
+            credits()
+        elif current_location == tile[3][3]:
+            current_location = "Southeast Ocean"
+            days += 0.5
+            far_se(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][2]:
+            current_location = tile[3][3]
+            days += 0.5
+            southeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South":
+            current_location = "Far South E"
+            days += 0.5
+            far_se(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South E":
+            print("Oops! You died from heat stroke. Try again?")
+            credits()
+        elif current_location == "Far South W":
+            current_location = "Far South"
+            days += 0.5
+            far_south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][1]:
+            current_location = tile[2][2]
+            days += 0.5
+            central(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][1]:
+            current_location = tile[1][2]
+            days += 0.5
+            north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][1]:
+            current_location = tile[3][2]
+            days += 0.5
+            south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][2]:
+            current_location = tile[2][3]
+            days += 0.5
+            east(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far Northwest W":
+            current_location = "Far Northwest"
+            days += 0.5
+            far_northwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far West":
+            current_location = tile[2][1]
+            days += 0.5
+            west(is_day, pockets_beginning, battery, current_location)
+
+    elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+        def move_west():
+            print("")
+            print("You chose to move west.")
+            wait(1)
+            print("You get your bearings and head west...")
+            load()
+            day_night(is_day)
+            battery_manager(battery)
+        if current_location == "Far North N":
+            current_location = "Far North W"
+            days += 0.5
+            far_nw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far North E":
+            current_location = "Far North"
+            days += 0.5
+            far_north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far North W":
+            print("Oops! You died from frostbite... Try again?")
+            credits()
+        elif current_location == tile[1][2]:
+            current_location = tile[1][1]
+            days += 0.5
+            northwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][3]:
+            current_location = tile[1][2]
+            days += 0.5
+            north(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][3]:
+            current_location = tile[2][2]
+            days += 0.5
+            central(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][3]:
+            current_location = tile[3][2]
+            days += 0.5
+            south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[3][2]:
+            current_location = tile[3][1]
+            days += 0.5
+            southwest(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South":
+            current_location = "Far South W"
+            days += 0.5
+            far_sw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South E":
+            current_location = "Far South"
+            days += 0.5
+            far_south(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Far South W":
+            print("Oops! You died from heat stroke and dehydration. Try again!")
+            credits()
+        elif current_location == tile[2][1]:
+            current_location = "Far West"
+            days += 0.5
+            far_west(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][1]:
+            current_location = "Far Northwest N"
+            days += 0.5
+            far_nw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Southeast ocean":
+            current_location = tile[3][3]
+            days += 0.5
+            southeast(is_day, pockets_beginning, battery, current_location)
+        elif current_location == "Jungle":
+            print("Oops! You died from heat stroke and dehydration. Try again!")
+            credits()
+        elif current_location == tile[2][1]:
+            current_location = "Far West"
+            days += 0.5
+            far_west(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[1][1]:
+            current_location = "Far Northwest N"
+            days += 0.5
+            far_nw(is_day, pockets_beginning, battery, current_location)
+        elif current_location == tile[2][2]:
+            current_location = tile[2][1]
+            days += 0.5
+            west(is_day, pockets_beginning, battery, current_location)
+
+    else:
+        print("Uh... You need to choose a direction...")
+
+def listen(tile, is_day):
+    if current_location == tile[1][3] or current_location == tile[2][2] or current_location == tile[2][3] or current_location == tile[3][1]:
+        def listen_green():
+            print("You hear crickets, and a slight breeze...")
+            wait(3)
+            print("Something doesn't seem right, though.")
+        listen_green()
+    elif current_location == tile[3][2]:
+        def listen_sand():
+            print("You hear wind sweeping across the dunes of sand...")
+            wait(3)
+            print("Something doesn't seem right, though...")
+        listen_sand()
+    elif current_location == tile[1][2]:
+        def listen_ice():
+            print("Try as you might, you can't seem to hear a sound...")
+            wait(3)
+            print("Something doesn't seem right, though...")
+        listen_ice()
+    elif current_location == tile[1][1]:
+        def listen_goop():
+            print("You hear crickets, frogs, and a slight breeze...")
+            wait(3)
+            print("Something doesn't seem right, though.")
+        listen_goop()
+    elif current_location == tile[3][3] or current_location == "Northeast Ocean":
+        def listen_sea():
+            print("You hear the wind, and waves lapping on the sand...")
+            wait(3)
+            print("Something doesn't seem right, though...")
+        listen_sea()
+    else:
+        def listen_doom():
+            print("You hear the sound of impending doom...")
+            wait(3)
+            credits()
+        listen_doom()
+
+def look(is_day, current_location, tile):
+    if current_location == "Lake":
+        def look_around_lake(is_day):
+            if is_day == True:
+                print("You see you're in the middle of the woods.")
+                wait(1)
+                print("You also see a large lake nearby...")
+                wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                wait(1)
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                wait(1)
+                print("Also, you can see a lake nearby with mysterious lights floating above it.")
+                wait(1)
+                print("Something doesn't seem right...")
+                wait(0.8)
+    elif current_location == tile[1][3] or current_location == tile[2][3] or current_location == tile[2][2]:
+        def look_around_woods(is_day, current_location):
+            if is_day == True:
+                print("")
+                print("You see you're in the middle of the woods.")
+                wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                if current_location == tile[2][3]:
+                    wait(1)
+                    print("Also, you think you see lights off to the east.")
+                else:
+                    pass
+                wait(1)
+                print("Something doesn't seem right, though.")
+                wait(0.8)
+    elif current_location == tile[3][2] or current_location == tile[4][3] or current_location == tile[3][2] or current_location == tile[4][1]:
+        look_around_south(is_day)
+    elif current_location == tile[1][2]: 
+        def look_around_ice(is_day):
+            print("")
+            print("You see a vast, white expanse, broken up by grey boulders jutting up from the ground.")
+            if is_day == True:
+                print("You see a cave off in the distance. Looking closer, you can make out faint dark splotches around the entrance.")
+            else:
+                print("Through the darkness, it's difficult to make out anything further than a couple feet away.")
+    elif current_location == tile[1][1]:
+        look_around_goop()
+    elif current_location == tile[3][3] or current_location == tile[1][4]:
+        look_around_ocean()
+    elif current_location == tile[0][0] or current_location == tile[0][1] or current_location == tile[0][2] or current_location == tile[0][3] or current_location == tile[1][0] or current_location == tile[2][0] or current_location == tile[3][0] or current_location == tile[1][2]:
+        def look_around_ice(is_day, current_location, tile):
+            if is_day == True:
+                print("You see you're in the middle of a frozen mountain range...")
+                wait(1)
+                if current_location == tile[1][2]:
+                    print("You also see a cave with bones littered around nearby...")
+                    wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                wait(1)
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                wait(1)
+                print("Something doesn't seem right...")
+                wait(0.8)
+    elif current_location == "Swamp":
+        def look_around_goop(is_day):
+            if is_day == True:
+                print("You see you're in the middle of a swamp.")
+                wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                wait(1)
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                wait(1)
+                print("Also, you can see mysterious lights floating around nearby...")
+                wait(1)
+                print("Something doesn't seem right...")
+                wait(0.8)
+    elif current_location in tile[3] or current_location in tile[4]:
+        def look_around_south(is_day):
+            if is_day == True:
+                print("You see you're in the middle of a vast desert.")
+                wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                wait(1)
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                wait(1)
+                print("You notice you're in the middle of a vast desert.")
+                wait(0.5)
+                print("You'd probably better get moving, before it turns day.")
+                wait(1)
+                print("Something doesn't seem right...")
+                wait(0.8)
+    elif current_location == tile[3][3] or current_location == tile[1][3]:
+        def look_around_ocean(is_day):
+            if is_day == True:
+                print("You see you're on a beach, with the ocean stretching out in front of you.")
+                wait(1)
+                print("You can tell which direction is which by the position of the sun.")
+                wait(1)
+                print("Something doesn't seem right, though...")
+            else:
+                print("As your eyes adjust, you notice you seem to be deep in the middle of basically nowhere.")
+                wait(3)
+                print("You look into the sky, and notice that wherever you are, it seems to be somewhat close to your home, at least; since you recognize the stars.")
+                wait(1)
+                print("You notice vast expanse of water stretching out in front of you.")
+                wait(0.5)
+                print("Something doesn't seem right...")
+                wait(0.8)
+    else:
+        print("You can see doom encroaching from all directions...")
+        wait(1)
+        credits()
+
+
+
+def panic():
+    print("Your heartrate increases...")
+    wait(1)
+    print("You start looking frantically around...")
+    wait(1)
+    print("You think you see something out of the corner of your eye.")
+    wait(0.5)
+    print("You spin quickly to look...")
+    wait(5)
+    print("Nothing's there.")
+
+def check_pockets(pockets_beginning, battery):
+    print("Searching...")
+    wait(1)
+    print("You have your phone and wallet.")
+    wait(5)
+    for item, item_info in pockets_beginning.items():
+        print("\nItem info:", item)
+        for key in item_info:
+            print(str(key) + ": " + str(item_info[key]))
+    print("")
+
+def actions(is_day, pockets_beginning, battery, current_location, tile, move):
+    if move == "listen":
+        listen(tile, is_day)
+    elif move == "look" or move == "look around":
+        look(is_day, current_location, tile)
+    elif move == "panic":
+        panic()
+    elif move == "wait":
+        stay(is_day, pockets_beginning, battery, current_location, tile)
+    else:
+        print("Oops!")
+
+def stay(is_day, pockets_beginning, battery, current_location, tile):
+    print("You chose to stay...")
+    wait(1)
+    timer(is_day)
+    if is_day == False:
+        if current_location == "Cave" or current_location == tile[1][2]:
+            print("Suddenly, a Yeti comes out of the cave and eats you.")
+            print("You died...")
+            credits()
+        elif current_location == tile[3][1]:
+            print("Suddenly, you're picked up by a sasquatch and thrown off a nearby cliff.")
+            print("You died...")
+            credits()
+        elif current_location == "Swamp":
+            print("Suddenly, a rodent of unusual size jumps out and eats you.")
+            print("You died...")
+            credits()
+        elif current_location == "Jungle":
+            print("Suddenly, a Jaguar jumps out of the underbrush and eats you.")
+            print("You died...")
+            credits()
+        elif current_location == tile[0][4] or current_location == tile[1][4] or current_location == tile[3][4] or current_location == tile[4][4] or current_location == "SE Ocean" or current_location == "NE Ocean":
+            print("Suddenly, you're swarmed and eaten by sharks.")
+            print("You died...")
+            credits()
+        elif current_location in tile[0] or current_location == tile[1][0] or current_location == tile[2][0] or current_location == tile[3][0]:
+            print("Oops! You froze to death...")
+            credits()
+        else: pass
+    else:
+        pass
+
+def central(is_day, pockets_beginning, battery, current_location):
+    current_location = tile[2][2]
+    print("You find yourself in a forest.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def north(is_day, pockets_beginning, battery, current_location):
+    current_location = tile[1][2]
+    print("You find yourself in a vast, snowbound ")
+    print(current_location)
+    choice1 = input("You see a cave off in the distance. Do you approach it (Y/N?) ").lower()
+    if choice1 == "yes" or choice1 == "approach":
+        print("You see the cave entrance is littered with bones.")
+        wait(1)
+        choice2 = input("Do you go in (Y/N)? ").lower()
+        if choice2 == "yes" or choice2 == "enter" or choice1 == "y":
+            cave(pockets_beginning, current_location)
+        elif choice2 == "no" or choice2 == "n":
+            print("Hi!")
+            move = input("Then what will you do (Move on, Wait, Look around, Panic, Listen)? ").lower()
+            while move != "move on":
+                if move == "panic" or move == "listen" or move == "look around" or move == "wait":
+                    actions(is_day, pockets_beginning, battery, current_location, tile, move)
+                    move = input("Now what will you do (Move on, Wait, Look around, Panic, Listen)? ")
+                elif move == "move on":
+                    break                    
+                else: 
+                    print("Oops!")
+                    break
+            new_dir = input("Which direction do you want to go in? ").lower()
+            move(new_dir, current_location, days)
+        else: pass
+    elif choice1 == "no" or choice1 == "n":
+        move = input("What do you want to do, then (Listen, Look around, Panic, Wait, Move on?) ").lower()
+        while move != "move on":
+            actions(is_day, pockets_beginning, battery, current_location, tile, move)
+            move = input("What do you want to do, then (Listen, Look around, Panic, Wait, Move on?) ").lower()
+
+def cave(pockets_beginning, current_location):
+    print("Whelp, you uh... Go into the cave...")
+    wait(1)
+    print(current_location)
+    print("You see a Yeti sleeping RIGHT IN FRONT OF YOU...")
+    wait(0.5)
+    print("It's a good thing you were quiet coming in here... But it could wake up at any time.")
+    wait(1)
+    choice2 = input("What do you do? (Wait, Sneak deeper into the cave (sneak), Retreat) ").lower()
+    #Waiting option
+    #100% done
+    if choice2 == "wait":
+        wait(1)
+        print("You sit down and wait... For what? I don't know.")
+        wait(2)
+        print("Eventually, the Yeti wakes up. It sees you sitting there, and picks you up, and eats you.")
+        wait(0.7)
+        print("GAME OVER! Try again?")
+    #Retreat
+    elif choice2 == "retreat":
+        print("You're back outside...")
+        day_night(is_day)
+        timer(is_day, days)
+        new_dir = input("What do (Move on, wait?) ")
+        #Turn back
+        if new_dir == "move on":
+            move(new_dir, current_location, days)
+    elif choice2 == "sneak":
+        stealth_roll = random.randint(0,100)
+        #Super Stealth Path
+        if stealth_roll >= 90:
+            wait(0.5)
+            print("By some miracle, you manage to not only manage to not step on any bones, but you get past the Yeti without disturbing it at all!")
+            print("You go deeper into the cave, to find a hot spring.")
+            choice3 = input("Do you get in? (Y/N) ")
+            #Bathing option
+            if choice3 == "Y" or choice3 == "y":
+                phone_check = random.randint(0,100)
+                if phone_check > 40:
+                    pass
+                else:
+                    pockets_beginning["Phone"]["Working"] = False
+                print("You get into the hot spring...")
+                wait(2)
+                print("You end up losing track of time...")
+                choice4 = input("You hear the Yeti stirring near the entrance. What do you do? (Hide behind some rocks, hide in the hot spring, try to escape past the Yeti) ")
+                #Hiding behind rocks option
+                if choice4 == "Rocks" or choice4 == "rocks":
+                    print("You hide behind some fallen boulders just in time for the Yeti to come into the room and get into the hot spring.")
+                    wait(0.5)
+                    print("It suddenly perks up, sniffing the air...")
+                    wait(1)
+                    print("It can smell you.")
+                    wait(1)
+                    print("It gets out of the water, and begins sniffing and following the scent.")
+                    print("It gets closer to the boulders you're hiding behind.")
+                    print("It roars, and slams the rocks with its fists, causing a few to crack.")
+                    constitution_roll = random.randint(0,100)
+                    #Stealth: 100 option
+                    if constitution_roll >= 72:
+                        print("You stay quiet enough to avoid detection...")
+                        wait(0.5)
+                        print("The Yeti roars one more time, then goes back to the hot spring.")
+                        wait(2)
+                        print("You wait until you hear it leave the cave... That's a long time.")
+                        wait(1)
+                        print("You quickly run out of the cave and back into the snow.")
+                    else:
+                        print("You let out a scream, and the Yeti roars again. It slams the rocks until they break, crushing you, then it goes back to bathing.")
+                        print("GAME OVER. You died!")
+                #Hiding in the pool option
+                elif choice4 == "Hot spring" or choice4 == "hot spring" or choice4 == "Hot Spring":
+                    print("You duck under the water, forgetting it's transparent.")
+                    print("The Yeti sees you, picks you up out of the water, and eats you.")
+                    print("GAME OVER! You died.")
+                #Escaping
+                elif choice4 == "Run away" or choice4 == "Run Away" or choice4 == "run away" or choice4 == "Escape" or choice4 == "escape":
+                    speed_check = random.randint(0,100)
+                    if speed_check == 100:
+                        print("By some miracle, you get past the Yeti, who is caught off guard by someone being in its cave. You run out into the snow. ")
+                        new_dir = input("What direction do you run in? (N/S/E/W) ")
+                        if new_dir == "N" or new_dir == "n" or new_dir == "North" or new_dir == "north":
+                            print("You keep running until you collapse from exhaustion...")
+                            wait(2)
+                            print("Oops! The game has frozen...")
+                            wait(3)
+                            print("AND SO HAVE YOU!!")
+                            wait(1)
+                            print("Try again.")
+                        elif new_dir == "South" or new_dir == "S" or new_dir == "south" or new_dir == "s":
+                            print("You run and run...")
+                            wait(1)
+                            print("Eventually, you end up back where you started...")
+                            wait(1)
+                            print("What do? (Look around, Listen, Panic, Move on) ")
+                            first_area(is_day, pockets_beginning, battery)
+                    else:
+                        print("You try to run past the Yeti, but slip and fall. The Yeti beats you up and eats you.")
+    else: print("Oops!")
+
+def northeast(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the northeastern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def east(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the eastern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def southeast(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the southeastern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def south(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the southern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def southwest(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the southwestern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+    
+def west(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the western area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+    
+def northwest(is_day, pockets_beginning, battery, current_location):
+    print("You spawned in the northwestern area")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def jungle(is_day, pockets_beginning, battery, current_location):
+    print("You entered the jungle.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def ocean_se(is_day, pockets_beginning, battery, current_location):
+    print("You entered the beach.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def ocean_ne(is_day, pockets_beginning, battery, current_location):
+    print("You entered the beach.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def swamp(is_day, pockets_beginning, battery, current_location):
+    print("You entered the swamp.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def lake(is_day, pockets_beginning, battery, current_location):
+    print("You approached the lake.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_north(is_day, pockets_beginning, battery, current_location):
+    print("You've entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_nw(is_day, pockets_beginning, battery, current_location):
+    print("You've entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_ne(is_day, pockets_beginning, battery, current_location):
+    print("You've entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_se(is_day, pockets_beginning, battery, current_location):
+    print("You entered the vast ocean.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_sw(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_south(is_day, pockets_beginning, battery, current_location):
+    print("You entered the vast desert.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_west(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_nw(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in? ")
+    move(new_dir, current_location, days)
+
+def far_west(is_day, pockets_beginning, battery, current_location):
+    print("You entered the vast desert.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in?")
+    move(new_dir, current_location, days)
+
+def far_northwest_w(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in?")
+    move(new_dir, current_location, days)
+
+def far_southwest_w(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in?")
+    move(new_dir, current_location, days)
+
+def far_sw(is_day, pockets_beginning, battery, current_location):
+    print("You entered the mountains.")
+    print(current_location)
+    new_dir = input("Which direction do you want to go in?")
+    move(new_dir, current_location, days)
+
+def goto(current_location, new_dir, battery):
+    #Central paths
+    if current_location == tile[2][2]:
+        if new_dir == "north" or new_dir == "n":
+            battery_manager(battery)
+            timer(is_day, days)
+            north(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            battery_manager(battery)
+            timer(is_day, days)
+            east(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            battery_manager(battery)
+            timer(is_day, days)
+            south(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            battery_manager(battery)
+            timer(is_day, days)
+            west(is_day, pockets_beginning, battery, current_location)
+
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Northern paths
+    if current_location == tile[1][2]:
+        if new_dir == "north" or new_dir == "n":
+            battery_manager(battery)
+            timer(is_day, days)
+            far_north(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            battery_manager(battery)
+            timer(is_day, days)
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            day_night(is_day)
+            battery_manager(battery)
+            timer(is_day, days)
+            central(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "w" or new_dir == "west":
+            battery_manager(battery)
+            timer(is_day, days)
+            northwest(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Northeastern paths
+    if current_location == tile[1][3]:
+        if new_dir == "north" or new_dir == "n":
+            battery_manager(battery)
+            timer(is_day, days)
+            northernmost_ne(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            battery_manager(battery)
+            timer(is_day, days)
+            ocean_ne(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manger(is_day, days)
+            central(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            battery_manager(battery)
+            timer(is_day, days)
+            north(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Eastern paths
+    if current_location == tile[2][3]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            credits()
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            ocean_se(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            central(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Southeastern paths
+    if current_location == tile[3][3]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            east(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            northeast(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            central(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            westernmost(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Southern paths
+    if current_location == tile[3][2]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            central(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            southeast(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            southernmost_s(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            southwest(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Southwestern paths
+    if current_location == tile[3][1]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            west(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            south(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            southernmost_sw(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            westernmost_sw(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Western paths
+    if current_location == tile[2][1]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            northwest(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            central(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            southwest(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            westernmost_w(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Northwestern paths
+    if current_location == tile[1][1]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            battery_manager(battery)
+            far_northw(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "east" or new_dir == "e":
+            timer(is_day, days)
+            battery_manager(battery)
+            north(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "south" or new_dir == "s":
+            timer(is_day, days)
+            battery_manager(battery)
+            west(is_day, pockets_beginning, battery, current_location)
+        elif new_dir == "west" or new_dir == "w":
+            timer(is_day, days)
+            battery_manager(battery)
+            westernmost_nw(is_day, pockets_beginning, battery, current_location)
+        else: print("Oops! Something broke, and we just don't know what went wrong!")
+
+    #Central Northernmost paths
+    if current_location == tile[0][2]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            print("Oops! You froze to death. Try again.")
+        if is_day == True:
+            if new_dir == "east" or new_dir == "e":
+                timer(is_day, days)
+                battery_manager(battery)
+                print("Oops! You froze to death.")
+            elif new_dir == "south" or new_dir == "s":
+                timer(is_day, days)
+                battery_manager(battery)
+                north(is_day, pockets_beginning, battery, current_location)
+            elif new_dir == "west" or new_dir == "w":
+                timer(is_day, days)
+                battery_manager(battery)
+                print("Oops! You froze to death. Try again!")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+            print("Oops! You froze to death. Try again!")
+        
+    #Eastern Northernmost paths
+    if current_location == tile[0][3]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            print("Oops! You froze to death. Try again.")
+        if is_day == True:
+            if new_dir == "east" or new_dir == "e":
+                timer(is_day, days)
+                print("Oops! You froze to death.")
+            elif new_dir == "south" or new_dir == "s":
+                timer(is_day, days)
+                battery_manager(battery)
+                northeast(is_day, pockets_beginning, battery, current_location)
+            elif new_dir == "west" or new_dir == "w":
+                timer(is_day, days)
+                print("Oops! You froze to death. Try again!")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+            print("Oops! You froze to death. Try again!")
+
+    #Western Northernmost paths
+    if current_location == tile[0][1]:
+        if new_dir == "north" or new_dir == "n":
+            timer(is_day, days)
+            print("Oops! You froze to death. Try again.")
+        if is_day == True:
+            if new_dir == "east" or new_dir == "e":
+                timer(is_day, days)
+                print("Oops! You froze to death.")
+            elif new_dir == "south" or new_dir == "s":
+                timer(is_day, days)
+                battery_manager(battery)
+                northwest(is_day, pockets_beginning, battery, current_location)
+            elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+                day_night(is_day)
+                print("Oops! You froze to death. Try again!")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+            print("Oops! You froze to death. Try again!")
+
+    #Central Southernmost paths
+    if current_location == tile[4][2]:
+        if new_dir == "North" or new_dir == "north" or new_dir == "N" or new_dir == "n" or new_dir == "NORTH":
+            day_night(is_day)
+            battery_manager(battery)
+            current_location = tile[3][2]
+            south(is_day, pockets_beginning, battery, current_location)
+        if is_day == False:
+            if new_dir == "East" or new_dir == "east" or new_dir == "E" or new_dir == "e" or new_dir == "EAST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "South" or new_dir == "south" or new_dir == "S" or new_dir == "s" or new_dir == "SOUTH":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+                print("Oops! You died from heatstroke and dehydration.")
+
+    #Eastern Southernmost paths
+    if current_location == tile[4][3]:
+        if new_dir == "North" or new_dir == "north" or new_dir == "N" or new_dir == "n" or new_dir == "NORTH":
+            day_night(is_day)
+            battery_manager(battery)
+            current_location = tile[3][3]
+            southeast(is_day, pockets_beginning, battery, current_location)
+        if is_day == False:
+            if new_dir == "East" or new_dir == "east" or new_dir == "E" or new_dir == "e" or new_dir == "EAST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "South" or new_dir == "south" or new_dir == "S" or new_dir == "s" or new_dir == "SOUTH":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+                print("Oops! You died from heatstroke and dehydration.")
+
+    #Western Southernmost paths
+    if current_location == tile[4][1]:
+        if new_dir == "North" or new_dir == "north" or new_dir == "N" or new_dir == "n" or new_dir == "NORTH":
+            day_night(is_day)
+            battery_manager(battery)
+            current_location = tile[3][1]
+            southwest(is_day, pockets_beginning, battery)
+        if is_day == False:
+            if new_dir == "East" or new_dir == "east" or new_dir == "E" or new_dir == "e" or new_dir == "EAST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "South" or new_dir == "south" or new_dir == "S" or new_dir == "s" or new_dir == "SOUTH":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+                print("Oops! You died from heatstroke and dehydration.")
+
+    #Westernmost paths
+    if current_location == tile[2][0]:
+        if new_dir == "North" or new_dir == "north" or new_dir == "N" or new_dir == "n" or new_dir == "NORTH":
+            day_night(is_day)
+            battery_manager(battery)
+            current_location = tile[1][0]
+            move_north()
+            far_west_n(is_day, pockets_beginning, battery, current_location)
+        if is_day == False:
+            if new_dir == "East" or new_dir == "east" or new_dir == "E" or new_dir == "e" or new_dir == "EAST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "South" or new_dir == "south" or new_dir == "S" or new_dir == "s" or new_dir == "SOUTH":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            elif new_dir == "West" or new_dir == "west" or new_dir == "W" or new_dir == "w" or new_dir == "WEST":
+                day_night(is_day)
+                print("Oops! You died from heatstroke and dehydration.")
+            else:
+                print("Oops! The game broke, and we just don't know what went wrong!")
+        else:
+                print("Oops! You died from heatstroke and dehydration.")
+
+def spawn(current_location):
+    if current_location == tile[2][2]:
+        central(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[1][2]:
+        north(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[1][3]:
+        northeast(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[2][3]:
+        east(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[3][3]:
+        southeast(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[3][2]:
+        south(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[3][1]:
+        southwest(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[2][1]:
+        west(is_day, pockets_beginning, battery, current_location)
+    elif current_location == tile[1][1]:
+        northwest(is_day, pockets_beginning, battery, current_location)
+    else:
+        print("Oops! Something broke.")
+
+def start(current_location, is_day, username): 
+     start = input(f"Hi {username}, do you want to start? ").lower()
+     while start != "" or start != "yes" or start != "y" or start != "start":
+        if start == "" or start == "y" or start == "start" or start == "yes":
+            if is_day == True:
+                #print(is_day)
+                #print(current_location)
+                day_intro()
+                spawn(current_location)
+                break
+            else:
+                #print(is_day)
+                #print(current_location)
+                night_intro()
+                spawn(current_location)
+                break
+        elif start == "debug":
+            print("What area do you want to debug?")
+            debug_area = input("NSEW, Ne, Nw, Se, Sw, N_Cave, S_Cave, W_Cliff, Nw_Swamp, Sw_Jungle, Ne_lake, Se_ocean ").lower()
+            #North
+            if debug_area == "north" or debug_area == "n":
+                current_location = tile[1][2]
+                north(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northeast
+            elif debug_area == "northeast" or debug_area == "ne":
+                current_location = tile[1][3]
+                northeast(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #East
+            elif debug_area == "east" or debug_area == "e":
+                current_location = tile[2][3]
+                east(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Southeast    
+            elif debug_area == "southeast" or debug_area == "se":
+                current_location = tile[3][3]
+                southeast(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #South
+            elif debug_area == "south" or debug_area == "s":
+                current_location = tile[3][2]
+                south(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Southwest
+            elif debug_area == "southwest" or debug_area == "sw":
+                current_location = tile[3][1]
+                southwest(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #West
+            elif debug_area == "west" or debug_area == "w":
+                current_location = tile[2][1]
+                west(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northwest
+            elif debug_area == "northwest" or debug_area == "nw":
+                current_location = tile[1][1]
+                northwest(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northern Cave
+            elif debug_area == "northern cave" or debug_area == "cave":
+                current_location = "Cave"
+                cave(pockets_beginning, current_location)
+                break
+
+            #Northeastern Lake
+            elif debug_area == "northeastern lake" or debug_area == "lake":
+                current_location = "Lake"
+                lake(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Southeastern Ocean
+            elif debug_area == "southeastern ocean" or debug_area == "ocean south":
+                current_location = "Southeast Ocean"
+                se_ocean(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northeastern Ocean
+            elif debug_area == "northeastern ocean" or debug_area == "ocean north":
+                current_location = "Northeast Ocean"
+                ne_ocean(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Southwestern Jungle
+            elif debug_area == "southwestern jungle" or debug_area == "jungle":
+                current_location = "Jungle"
+                jungle(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northwestern Swamp
+            elif debug_area == "northwestern swamp" or debug_area == "swamp":
+                current_location = "Swamp"
+                swamp(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Southeastern Most Ocean
+            elif debug_area == "far southeastern ocean" or debug_area == "ocean 2":
+                current_location = "Far Southeast Ocean"
+                far_se_ocean(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Northeastern Most Ocean
+            elif debug_area == "far northeastern ocean" or debug_area == "ocean 3":
+                current_location = "Far Northeast Ocean"
+                far_ne_ocean(is_day, pockets_beginning, battery, current_location)
+                break
+
+            #Central
+            elif debug_area == "center":
+                current_location = tile[2][2]
+                central(is_day, pockets_beginning, battery, current_location)
+                break
+
+        else:
+            wait(1)
+            print("Then why'd you boot this game up?")
+            print("...")
+            wait(2)
+            start = input("Are you ready? (Y/N): ")
+start(current_location, is_day, username)
